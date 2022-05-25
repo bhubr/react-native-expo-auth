@@ -1,13 +1,15 @@
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import SignupScreen from "./screens/SignupScreen";
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>HomeScreen</Text>
+      <Button title="Sign up" onPress={() => navigation.navigate("Signup")} />
       <StatusBar style="auto" />
     </View>
   );
@@ -29,6 +31,13 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{
+            tabBarButton: () => null,
+          }}
+        />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
