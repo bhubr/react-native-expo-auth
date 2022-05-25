@@ -9,10 +9,13 @@ import SignupScreen from "./screens/SignupScreen";
 import AuthProvider from "./providers/AuthProvider";
 
 function HomeScreen({ navigation }) {
+  const { logout } = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Text>HomeScreen</Text>
       <Button title="Sign up" onPress={() => navigation.navigate("Signup")} />
+
+      <Button title="Sign out" onPress={logout} />
       <StatusBar style="auto" />
     </View>
   );

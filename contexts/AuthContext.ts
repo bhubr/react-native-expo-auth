@@ -7,12 +7,16 @@ export interface IUser {
 
 interface IAuthContext {
   user: IUser | null;
-  setUser: (user: IUser | null) => void;
+  login: (jwt: string, user: IUser | null) => void;
+  logout: () => void;
 }
 
 export default createContext<IAuthContext>({
   user: null,
-  setUser: () => {
+  login: () => {
+    /*  */
+  },
+  logout: () => {
     /*  */
   },
 });

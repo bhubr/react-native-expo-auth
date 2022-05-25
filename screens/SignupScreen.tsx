@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { AxiosError } from "axios";
 
 import { postSignup } from "../helpers/api";
-import { storeJwt } from "../helpers/token-storage";
 import AuthContext from "../contexts/AuthContext";
 
 interface IServerErrorBody {
@@ -14,14 +13,12 @@ interface IServerErrorBody {
 export default function SignupScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const onSubmit = async () => {
     try {
       const { userId, jwt } = await postSignup({ email, password });
-      await storeJwt(jwt);
-      // console.log(userId, jwt);
-      setUser({ id: userId, email });
+      login(jwt, { id: userId, email });
     } catch (err) {
       const errObj = err as Error;
       let message = errObj.message;

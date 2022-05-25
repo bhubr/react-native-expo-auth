@@ -11,3 +11,12 @@ interface ICredentials {
 
 export const postSignup = (credentials: ICredentials) =>
   instance.post("/auth/signup", credentials).then(({ data }) => data);
+
+export const getUser = (jwt: string) =>
+  instance
+    .get("/auth/user", {
+      headers: {
+        authorization: `Bearer ${jwt}`,
+      },
+    })
+    .then(({ data }) => data);
