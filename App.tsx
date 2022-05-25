@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AuthContext, { IUser } from "./contexts/AuthContext";
 
 import SignupScreen from "./screens/SignupScreen";
+import AuthProvider from "./providers/AuthProvider";
 
 function HomeScreen({ navigation }) {
   return (
@@ -30,9 +31,8 @@ function SettingsScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [user, setUser] = useState<IUser | null>(null);
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthProvider>
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen name="Home" component={HomeScreen} />
@@ -46,7 +46,7 @@ export default function App() {
           <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 
