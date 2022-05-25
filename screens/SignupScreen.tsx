@@ -1,8 +1,10 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { postSignup } from "../helpers/api";
 import { AxiosError } from "axios";
+
+import { postSignup } from "../helpers/api";
+import { storeJwt } from "../helpers/token-storage";
 
 interface IServerErrorBody {
   error: string;
@@ -15,13 +17,16 @@ export default function SignupScreen() {
   const onSubmit = async () => {
     try {
       const { userId, jwt } = await postSignup({ email, password });
+      await storeJwt(jwt);
       console.log(userId, jwt);
     } catch (err) {
-      const axiosErr = err as AxiosError;
-      let message = axiosErr.message;
-      if (axiosErr?.response?.data) {
-        const resBody = axiosErr?.response?.data as IServerErrorBody;
-        message += ` - details: ${resBody.error}`;
+      const errObj = err as Error;
+      let message = errObj.message;
+      if (errObj instanceof AxiosError) {
+        if (errObj?.response?.data) {
+          const resBody = errObj?.response?.data as IServerErrorBody;
+          message += ` - details: ${resBody.error}`;
+        }
       }
       console.error(message);
     }
@@ -32,7 +37,11 @@ export default function SignupScreen() {
       <TextInput onChangeText={setEmail} value={email} />
 
       <Text style={styles.inputLabel}>Password</Text>
-      <TextInput onChangeText={setPassword} value={password} />
+      <TextInput
+        textContentType="password"
+        onChangeText={setPassword}
+        value={password}
+      />
 
       <Button title="Sign up" onPress={onSubmit} />
 
